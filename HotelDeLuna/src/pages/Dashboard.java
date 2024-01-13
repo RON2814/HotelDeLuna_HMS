@@ -6,11 +6,13 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +22,8 @@ public class Dashboard extends JPanel implements ActionListener{
 	
 	private int roomsButtonRow;
 	private int roomspanelHeight = (130+20)*2;
+	
+	ImageIcon availIcon = new ImageIcon("src/assets/AVAILABLE_NoticeIcon.png");
 	
 	private JPanel roomspanel, roomspanelButtons;
 	private JButton room1, room2, room3, room4, room5,
@@ -48,7 +52,7 @@ public class Dashboard extends JPanel implements ActionListener{
 		
 		room1 = new JButton();
 		room1.setText("<html><p style='text-align:center;'>Room 1<br>John Aaron<br>TIME</p></html>");
-		room1.setFont(new Font("Code Bold", Font.PLAIN, 12));
+		room1.setFont(new Font("Code Bold", Font.PLAIN, 18));
 		room1.setFocusable(false);
 		room1.addActionListener(this);
 		
@@ -99,6 +103,12 @@ public class Dashboard extends JPanel implements ActionListener{
 		this.add(navTitle);
 		this.setPreferredSize(new Dimension(1280, 720));
 		this.setBackground(new Color(22,22,22));
+	}
+	
+	public static void resizeImageIcon(String imageDir, int width, int height) {
+		ImageIcon image = new ImageIcon(imageDir);
+		Image img = image.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		image = new ImageIcon(img);
 	}
 	
 	@Override
