@@ -17,7 +17,11 @@ import javax.swing.JTextField;
 
 import com.github.lgooddatepicker.components.DateTimePicker;
 
+import database.Guest;
+
 public class ManageRoom extends JFrame implements ActionListener{
+	Guest g;
+	
 	JLabel roomNumber;
 	JTextField nameTField, paymentTField;
 	DateTimePicker checkin_dt, checkout_dt;
@@ -97,6 +101,13 @@ public class ManageRoom extends JFrame implements ActionListener{
 		if(e.getSource() == test) {
 			System.out.println(checkin_dt.getDatePicker() + " " + checkin_dt.getTimePicker());
 			System.out.println();
+			String name = nameTField.getText();
+			String checkin = checkin_dt.getDatePicker() + " " + checkin_dt.getTimePicker();
+			String checkout = checkout_dt.getDatePicker() + " " + checkout_dt.getTimePicker();
+			int payment = Integer.valueOf(paymentTField.getText());
+			
+			g = new Guest();
+			g.insertData(name, checkin, checkout, payment);
 		}
 	}
 }
