@@ -15,18 +15,22 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DateTimePicker;
+import com.github.lgooddatepicker.components.TimePicker;
 
-import database.Guest;
+import database.GuestDB;
 
 public class ManageRoom extends JFrame implements ActionListener{
-	Guest g;
+	private GuestDB guest;
 	
-	JLabel roomNumber;
-	JTextField nameTField, paymentTField;
-	DateTimePicker checkin_dt, checkout_dt;
+	private JLabel roomNumber;
+	private JTextField nameTField, paymentTField;
+	private DateTimePicker checkin_dt, checkout_dt;
 	
-	JButton test;
+	private JButton test;
+	
+	private int roomNo;
 	
 	//this constructor is a JFrame that show when the room is press
 	public ManageRoom(int roomNo) {
@@ -38,6 +42,8 @@ public class ManageRoom extends JFrame implements ActionListener{
 		} catch (IOException|FontFormatException e) {
 			e.printStackTrace();
 		}
+		
+		this.roomNo = roomNo;
 		
 		roomNumber = new JLabel("ROOM " + roomNo);
 		roomNumber.setForeground(Color.white);
@@ -94,6 +100,7 @@ public class ManageRoom extends JFrame implements ActionListener{
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.getContentPane().setBackground(new Color(22,22,22));
+		this.setVisible(true);
 	}
 
 	@Override
@@ -102,12 +109,17 @@ public class ManageRoom extends JFrame implements ActionListener{
 			System.out.println(checkin_dt.getDatePicker() + " " + checkin_dt.getTimePicker());
 			System.out.println();
 			String name = nameTField.getText();
-			String checkin = checkin_dt.getDatePicker() + " " + checkin_dt.getTimePicker();
-			String checkout = checkout_dt.getDatePicker() + " " + checkout_dt.getTimePicker();
+			DatePicker checkin_date = checkin_dt.getDatePicker();
+			TimePicker checkin_time = checkin_dt.getTimePicker();
+			DatePicker checkout_date = checkout_dt.getDatePicker();
+			TimePicker checkout_time = checkout_dt.getTimePicker();
 			int payment = Integer.valueOf(paymentTField.getText());
 			
-			g = new Guest();
-			g.insertData(name, checkin, checkout, payment);
+			guest = new GuestDB();
+			guest.insertData(roomNo, name, checkin_date, checkin_time, checkout_date, checkout_time, payment);
+			
+			this.setVisible(false);
+			this.dispose();
 		}
 	}
 }

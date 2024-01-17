@@ -14,8 +14,14 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import pages.ManageRoom;
+
 public class RoomButton extends JButton implements ActionListener, MouseListener{
 	private int roomStatus;
+	private int roomNo;
+	private int guestId;
+	
+	private ManageRoom manage;
 	
 	private ImageIcon availableStatus = new ImageIcon("src/assets/AVAILABLE_NoticeIcon.png");
 	private ImageIcon on_goingStatus = new ImageIcon("src/assets/ONGOING_NoticeIcon.png");
@@ -37,6 +43,7 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 		Image icon = statusIcons[status-1].getImage().getScaledInstance(128, 16, Image.SCALE_SMOOTH);
 		ImageIcon statusImageIcon = new ImageIcon(icon);
 		roomStatus = status;
+		roomNo = roomNumber;
 		
 		String textInButton = "<html><p style='font-size:20px; text-align:center;'>Room "+roomNumber+"</p>"
 							+ "<p style='text-align:center;'><br>"+guestName+"<br>"+checkinDateTime+"<br>"+checkoutDateTime+"</p></html>";
@@ -60,8 +67,8 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("This is pressed.");
-		
+		System.out.println("This is pressed. " + roomNo);
+		manage = new ManageRoom(roomNo);
 	}
 	
 	//Mouse Listener Yes

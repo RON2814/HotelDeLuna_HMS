@@ -14,6 +14,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Timer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,32 +24,43 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import components.RoomButton;
-import database.Guest;
+import database.GuestDB;
 
-public class Dashboard extends JPanel implements ActionListener, MouseListener{
-	Guest g;
+public class Dashboard extends JPanel implements ActionListener{
+	//database
+	private GuestDB guest; 
+	private int guestId;
 	
-	ManageRoom mr;
+	private ManageRoom mr;
 	
 	private int roomsButtonRow;
 	private int roomspanelHeight = (130+10)*2;
 	
-	ImageIcon availIcon = new ImageIcon("src/assets/AVAILABLE_NoticeIcon.png");
-	Image img = availIcon.getImage().getScaledInstance(128, 16, Image.SCALE_SMOOTH);
-	
 	private JPanel roomspanel, roomspanelButtons;
-	private JButton room1, room2, room3, room4, room5,
+	private RoomButton room1, room2, room3, room4, room5,
 					room6, room7, room8, room9, room10;
 	private JLabel navTitle;
+	private JLabel timer;
 	
-	RoomButton rb = new RoomButton(1, "John Aaron", "1", "1", 1);
+	Timer actionTimer;
+	
 	public Dashboard() {
-		availIcon = new ImageIcon(img);
+		//import font
+		try {
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/TheNextFont.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/Roboto-Regular.ttf")));
+		} catch (IOException|FontFormatException e) {
+			e.printStackTrace();
+		}
+		//initializing components here..
 		roomspanel = new JPanel();
 		roomspanelButtons = new JPanel();
 		navTitle = new JLabel("HOTEL DE LUNA");
+		timer = new JLabel();
+		actionTimer = new Timer();
 		
-		roomspanel.setBounds(35, 75, 1210, 620);
+		roomspanel.setBounds(35, 75, 1210, 600);
 		roomspanel.setBackground(new Color(0,30,25));
 		roomspanel.setLayout(null);
 		roomspanel.add(roomspanelButtons);
@@ -55,51 +69,17 @@ public class Dashboard extends JPanel implements ActionListener, MouseListener{
 		roomspanelButtons.setLayout(new GridLayout(2, 5, 10, 10));
 		roomspanelButtons.setBackground(new Color(255,255,255,0));
 		
-		try {
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/TheNextFont.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/CODE Bold.otf")));
-		} catch (IOException|FontFormatException e) {
-			e.printStackTrace();
-		}
-		
-		room1 = new JButton();
-		room1.setText("<html><p style='font-size:20px; text-align:center;'>Room 1</p><p style='text-align:center;'><br>John Aaron<br>TIME<br>TIME</p></html>");
-		room1.setIcon(availIcon);
-		room1.setIconTextGap(2);
-		room1.setHorizontalTextPosition(JButton.CENTER);
-		room1.setVerticalTextPosition(JButton.TOP);
-		room1.setFont(new Font("Code Bold", Font.PLAIN, 18));
-		room1.setFocusable(false);
-		room1.setBackground(new Color(255,255,255,0));
-		room1.addActionListener(this);
-		
-		room2 = new JButton();
-		room2.addActionListener(this);
-		
-		room3 = new JButton();
-		room3.addActionListener(this);
-		
-		room4 = new JButton();
-		room4.addActionListener(this);
-		
-		room5 = new JButton();
-		room5.addActionListener(this);
-		
-		room6 = new JButton();
-		room6.addActionListener(this);
-		
-		room7 = new JButton();
-		room7.addActionListener(this);
-		
-		room8 = new JButton();
-		room8.addActionListener(this);
-		
-		room9 = new JButton();
-		room9.addActionListener(this);
-		
-		room10 = new JButton();
-		room10.addActionListener(this);
+		//buttons for manage room...also can add more here
+		room1 = new RoomButton(1, "Testing", "CHECK IN", "CHECK OUT", 1);
+		room2 = new RoomButton(2, "Testing No2", "CHECK IN", "CHECK OUT", 2);
+		room3 = new RoomButton(3, "Testing No3", "CHECK IN", "CHECK OUT", 3);
+		room4 = new RoomButton(4, "Testing No4", "CHECK IN", "CHECK OUT", 4);
+		room5 = new RoomButton();
+		room6 = new RoomButton();
+		room7 = new RoomButton();
+		room8 = new RoomButton();
+		room9 = new RoomButton();
+		room10 = new RoomButton();
 		
 		roomspanelButtons.add(room1);
 		roomspanelButtons.add(room2);
@@ -110,60 +90,50 @@ public class Dashboard extends JPanel implements ActionListener, MouseListener{
 		roomspanelButtons.add(room7);
 		roomspanelButtons.add(room8);
 		roomspanelButtons.add(room9);
-		//roomspanelButtons.add(room10);
-		roomspanelButtons.add(rb);
+		roomspanelButtons.add(room10);
 		
 		navTitle.setBounds(50, 15, 400, 50);
 		navTitle.setFont(new Font("The Next Font", Font.PLAIN, 30));
 		navTitle.setForeground(Color.white);
 		
+		timer.setBounds(1062,685,200,20);
+		timer.setFont(new Font("Roboto Regular", Font.BOLD, 20));
+		timer.setForeground(Color.white);
+		currentDateTime();
+		
 		this.setLayout(null);
 		this.add(roomspanel);
 		this.add(navTitle);
+		this.add(timer);
 		this.setPreferredSize(new Dimension(1280, 720));
 		this.setBackground(new Color(25,25,25));
+		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == room1) {
-			System.out.println("test 1 button is pressed");
-			mr = new ManageRoom(1);
-			mr.setVisible(true);
-		}
-		if(e.getSource() == room2) {
-			g = new Guest();
-			g.printData();
-		}
+//		if(e.getSource() == room1) {
+//			System.out.println("test 1 button is pressed");
+//			mr = new ManageRoom(1);
+//			mr.setVisible(true);
+//		}
+//		if(e.getSource() == room2) {
+//			guest = new GuestDB();
+//			//g.printData();
+//			System.out.println(guest.retrieveGuestData(2));
+//		}
+//		if(e.getSource() == room3) {
+//			guest = new GuestDB();
+//			guest.printData();
+//		}
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	
+	public void currentDateTime() {
+		 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+		 LocalDateTime now = LocalDateTime.now();
+		 timer.setText(dtf.format(now));
+		 timer.revalidate();
+		 timer.repaint();
 	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }
