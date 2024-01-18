@@ -23,12 +23,15 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import components.RealTimeClock;
 import components.RoomButton;
 import database.GuestDB;
+import database.ManageRoomDB;
 
-public class Dashboard extends JPanel implements ActionListener{
+public class Dashboard extends JPanel{
 	//database
 	private GuestDB guest; 
+	private ManageRoomDB manageDb;
 	private int guestId;
 	
 	private ManageRoom mr;
@@ -40,9 +43,7 @@ public class Dashboard extends JPanel implements ActionListener{
 	private RoomButton room1, room2, room3, room4, room5,
 					room6, room7, room8, room9, room10;
 	private JLabel navTitle;
-	private JLabel timer;
-	
-	Timer actionTimer;
+	private RealTimeClock timer;
 	
 	public Dashboard() {
 		//import font
@@ -57,8 +58,6 @@ public class Dashboard extends JPanel implements ActionListener{
 		roomspanel = new JPanel();
 		roomspanelButtons = new JPanel();
 		navTitle = new JLabel("HOTEL DE LUNA");
-		timer = new JLabel();
-		actionTimer = new Timer();
 		
 		roomspanel.setBounds(35, 75, 1210, 600);
 		roomspanel.setBackground(new Color(0,30,25));
@@ -69,11 +68,15 @@ public class Dashboard extends JPanel implements ActionListener{
 		roomspanelButtons.setLayout(new GridLayout(2, 5, 10, 10));
 		roomspanelButtons.setBackground(new Color(255,255,255,0));
 		
+		//testing database v0.1
+		manageDb = new ManageRoomDB(1);
+		System.out.println(manageDb.getGuestId() + "-" + manageDb.getGuestName());
+		
 		//buttons for manage room...also can add more here
-		room1 = new RoomButton(1, "Testing", "CHECK IN", "CHECK OUT", 1);
-		room2 = new RoomButton(2, "Testing No2", "CHECK IN", "CHECK OUT", 2);
-		room3 = new RoomButton(3, "Testing No3", "CHECK IN", "CHECK OUT", 3);
-		room4 = new RoomButton(4, "Testing No4", "CHECK IN", "CHECK OUT", 4);
+		room1 = new RoomButton(1, manageDb.getGuestId(), manageDb.getGuestName(), manageDb.getCheckIn(), manageDb.getCheckOut(), manageDb.getRoomAvail());
+		room2 = new RoomButton(2, 2, "Testing No2", "CHECK IN", "CHECK OUT", 2);
+		room3 = new RoomButton(3, 3, "Testing No3", "CHECK IN", "CHECK OUT", 3);
+		room4 = new RoomButton(4, 4, "Testing No4", "CHECK IN", "CHECK OUT", 4);
 		room5 = new RoomButton();
 		room6 = new RoomButton();
 		room7 = new RoomButton();
@@ -96,10 +99,7 @@ public class Dashboard extends JPanel implements ActionListener{
 		navTitle.setFont(new Font("The Next Font", Font.PLAIN, 30));
 		navTitle.setForeground(Color.white);
 		
-		timer.setBounds(1062,685,200,20);
-		timer.setFont(new Font("Roboto Regular", Font.BOLD, 20));
-		timer.setForeground(Color.white);
-		currentDateTime();
+		timer = new RealTimeClock();
 		
 		this.setLayout(null);
 		this.add(roomspanel);
@@ -107,33 +107,13 @@ public class Dashboard extends JPanel implements ActionListener{
 		this.add(timer);
 		this.setPreferredSize(new Dimension(1280, 720));
 		this.setBackground(new Color(25,25,25));
-		
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-//		if(e.getSource() == room1) {
-//			System.out.println("test 1 button is pressed");
-//			mr = new ManageRoom(1);
-//			mr.setVisible(true);
-//		}
-//		if(e.getSource() == room2) {
-//			guest = new GuestDB();
-//			//g.printData();
-//			System.out.println(guest.retrieveGuestData(2));
-//		}
-//		if(e.getSource() == room3) {
-//			guest = new GuestDB();
-//			guest.printData();
-//		}
-	}
-	
-	public void currentDateTime() {
-		 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-		 LocalDateTime now = LocalDateTime.now();
-		 timer.setText(dtf.format(now));
-		 timer.revalidate();
-		 timer.repaint();
+	public void repaintTheDashboard() {
+		roomspanelButtons.revalidate();
+		roomspanelButtons.repaint();
+		this.revalidate();
+		this.repaint();
 	}
 	
 }
