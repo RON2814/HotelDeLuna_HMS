@@ -151,12 +151,8 @@ public class ManageRoom extends JFrame implements ActionListener{
 		this.add(test);
 		
 		this.setLocationRelativeTo(null);
-<<<<<<< HEAD
-		
-=======
 		this.setUndecorated(true);
 		this.getContentPane().setBackground(new Color(22,22,22));
->>>>>>> branch 'master' of https://github.com/RON2814/HotelDeLuna_HMS
 		this.setVisible(true);
 	}
 
@@ -186,7 +182,7 @@ public class ManageRoom extends JFrame implements ActionListener{
 			this.setVisible(false);
 			this.dispose();
 			
-			Dashboard db = new Dashboard();
+			DashboardPanel db = new DashboardPanel();
 			RoomButton rb = new RoomButton();
 			rb.setButtonText(roomNo, guestId, guestName, checkinCom, checkoutCom);
 		}

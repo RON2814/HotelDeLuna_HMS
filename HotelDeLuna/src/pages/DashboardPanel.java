@@ -37,11 +37,13 @@ import javax.swing.JToggleButton;
 
 import components.RoomButton;
 import database.GuestDB;
+import database.ManageRoomDB;
 
 
 public class DashboardPanel extends JPanel implements ActionListener{
 	//database
 	private GuestDB guest; 
+	private ManageRoomDB manageDb;
 	private int guestId;
 	
 	private ManageRoom mr;
@@ -107,11 +109,17 @@ public class DashboardPanel extends JPanel implements ActionListener{
 		roomspanelButtons.setLayout(new GridLayout(2, 5, 10, 5));
 		roomspanelButtons.setBackground(Color.WHITE);
 		
+
+		//testing database v0.1
+		manageDb = new ManageRoomDB(1);
+		System.out.println(manageDb.getGuestId() + "-" + manageDb.getGuestName());
+		
+		
 		//buttons for manage room...also can add more here
-		room1 = new RoomButton(1, "Testing", "CHECK IN", "CHECK OUT", 1);
-		room2 = new RoomButton(2, "Testing No2", "CHECK IN", "CHECK OUT", 2);
-		room3 = new RoomButton(3, "Testing No3", "CHECK IN", "CHECK OUT", 3);
-		room4 = new RoomButton(4, "Testing No4", "CHECK IN", "CHECK OUT", 4);
+		room1 = new RoomButton(1, manageDb.getGuestId(), manageDb.getGuestName(), manageDb.getCheckIn(), manageDb.getCheckOut(), manageDb.getRoomAvail());
+		room2 = new RoomButton(2, 2, "Testing No2", "CHECK IN", "CHECK OUT", 2);
+		room3 = new RoomButton(3, 3, "Testing No3", "CHECK IN", "CHECK OUT", 3);
+		room4 = new RoomButton(4, 4, "Testing No4", "CHECK IN", "CHECK OUT", 4);
 		room5 = new RoomButton();
 		room6 = new RoomButton();
 		room7 = new RoomButton();
