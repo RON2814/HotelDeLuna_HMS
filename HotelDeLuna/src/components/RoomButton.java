@@ -1,9 +1,15 @@
 package components;
 
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -14,6 +20,7 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import components.RoundedButton;
 import pages.ManageRoom;
 
 public class RoomButton extends JButton implements ActionListener, MouseListener{
@@ -56,14 +63,40 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 			e.printStackTrace();
 		}
 		
-		this.setFont(new Font("Code Bold", Font.PLAIN, 18));
-		this.setIcon(statusImageIcon);
-		this.setText(textInButton);
-		this.setHorizontalTextPosition(JButton.CENTER);
-		this.setVerticalTextPosition(JButton.TOP);
-		this.setFocusable(false);
-		this.addActionListener(this);
+		 
+		
+		setForeground(Color.WHITE);
+		setFont(new Font("Code Bold", Font.PLAIN, 18));
+		setBackground(Color.decode("#004aad"));
+		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		setContentAreaFilled(false);
+		setFocusable(false);
+		setBorder(null);
+		setIcon(statusImageIcon);
+		setText(textInButton);
+		setHorizontalTextPosition(JButton.CENTER);
+		setVerticalTextPosition(JButton.TOP);
+		addActionListener(this);
+		
 	}
+	@Override
+    public Dimension getPreferredSize() {
+        return new Dimension(150, 100); // Set a fixed preferred size for the button
+    }
+	@Override
+	protected void paintComponent(Graphics g) {
+	    Graphics2D g2d = (Graphics2D) g;
+	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    int width = getWidth();
+	    int height = getHeight();
+	    g2d.setColor(getBackground());
+	    g2d.fillRoundRect(0, 0, width, height, 50, 50);
+
+	    super.paintComponent(g);
+	}
+	
+	
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -101,5 +134,7 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 		// TODO Auto-generated method stub
 		
 	}
+	
+
 	
 }

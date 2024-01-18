@@ -7,6 +7,7 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -35,6 +36,11 @@ public class ManageRoom extends JFrame implements ActionListener{
 	//this constructor is a JFrame that show when the room is press
 	public ManageRoom(int roomNo) {
 		//this will import the Font .otf or .ttf file
+		
+		setUndecorated(true);
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
+		this.getContentPane().setBackground(new Color(22,22,22));
+		
 		try {
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/TheNextFont.ttf")));
@@ -85,7 +91,8 @@ public class ManageRoom extends JFrame implements ActionListener{
 		test.setBounds(300, 300, 100, 30);
 		test.addActionListener(this);
 		
-		this.setSize(new Dimension(500, 400));
+		
+		this.setSize(500, 400);
 		this.setLayout(null);
 		this.add(roomNumber);
 		this.add(guestName);
@@ -97,9 +104,9 @@ public class ManageRoom extends JFrame implements ActionListener{
 		this.add(paymentLabel);
 		this.add(paymentTField);
 		this.add(test);
-		this.setResizable(false);
+		
 		this.setLocationRelativeTo(null);
-		this.getContentPane().setBackground(new Color(22,22,22));
+		
 		this.setVisible(true);
 	}
 
