@@ -133,7 +133,7 @@ public class DashboardPanel extends JPanel implements ActionListener{
 //		navTitle.setBounds(50, 15, 400, 50);
 //		navTitle.setFont(new Font("The Next Font", Font.PLAIN, 30));
 //		navTitle.setForeground(Color.white);
-		
+		//baliw nako
 		timer.setBounds(1062,685,200,20);
 		timer.setFont(new Font("Roboto Regular", Font.BOLD, 20));
 		timer.setForeground(Color.white);

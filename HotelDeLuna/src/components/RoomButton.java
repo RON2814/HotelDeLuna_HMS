@@ -26,9 +26,13 @@ import pages.ManageRoom;
 public class RoomButton extends JButton implements ActionListener, MouseListener{
 	private int roomStatus;
 	private int roomNo;
+	private String guestName;
+	private String checkIn, checkOut;
 	private int guestId;
 	
 	private ManageRoom manage;
+	
+	private String textInButton;
 	
 	private ImageIcon availableStatus = new ImageIcon("src/assets/AVAILABLE_NoticeIcon.png");
 	private ImageIcon on_goingStatus = new ImageIcon("src/assets/ONGOING_NoticeIcon.png");
@@ -45,15 +49,16 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 	 * 3 = Times up Icon
 	 * 4 = Reserved Icon
 	 */
-	public RoomButton(int roomNumber, String guestName, String checkinDateTime, String checkoutDateTime, int status) {
+	public RoomButton(int roomNumber,int guestId, String guestName, String checkinDateTime, String checkoutDateTime, int status) {
 		ImageIcon[] statusIcons = {availableStatus, on_goingStatus, times_upStatus, reservedStatus};
 		Image icon = statusIcons[status-1].getImage().getScaledInstance(128, 16, Image.SCALE_SMOOTH);
 		ImageIcon statusImageIcon = new ImageIcon(icon);
 		roomStatus = status;
 		roomNo = roomNumber;
+		this.guestId = guestId;
 		
-		String textInButton = "<html><p style='font-size:20px; text-align:center;'>Room "+roomNumber+"</p>"
-							+ "<p style='text-align:center;'><br>"+guestName+"<br>"+checkinDateTime+"<br>"+checkoutDateTime+"</p></html>";
+		textInButton = "<html><p style='font-size:20px; text-align:center;'>Room "+roomNumber+"</p>"
+						+ "<p style='text-align:center;'><br>"+guestName+"<br>"+checkinDateTime+"<br>"+checkoutDateTime+"</p></html>";
 		//importing the font and use them.
 		try {
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -98,10 +103,21 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 	
 	
 	
+	public void setButtonText(int roomNo, int guestId, String guestName, String checkin, String checkout) {
+		textInButton = "<html><p style='font-size:20px; text-align:center;'>Room "+roomNo+"</p>"
+				+ "<p style='text-align:center;'><br>"+guestName+"<br>"+checkin+"<br>"+checkout+"</p></html>";
+		this.setText(textInButton);
+		this.revalidate();
+		this.repaint();
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("This is pressed. " + roomNo);
-		manage = new ManageRoom(roomNo);
+		System.out.println(guestId);
+		manage = new ManageRoom(roomNo, guestId);
+		this.revalidate();
+		this.repaint();
 	}
 	
 	//Mouse Listener Yes
