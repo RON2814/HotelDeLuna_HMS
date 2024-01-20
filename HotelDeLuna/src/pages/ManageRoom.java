@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.text.DateFormatter;
 
@@ -37,10 +38,12 @@ public class ManageRoom extends JFrame implements ActionListener{
 	private JTextField nameTField, paymentTField;
 	private DatePicker checkin_date, checkout_date;
 	private TimePicker checkin_time, checkout_time;
+	private JRadioButton paymentMethodCash, paymentMethodCard;
+	private JRadioButton roomStatusOngiong, roomStatusReserved;
 	
 	private int guestId;
 	
-	private JButton test;
+	private JButton submitBtn, markAsDoneBtn, deleteBtn;
 	
 	private int roomNo;
 	private String guestName;
@@ -53,13 +56,6 @@ public class ManageRoom extends JFrame implements ActionListener{
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
 		this.getContentPane().setBackground(new Color(22,22,22));
 		
-		try {
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/TheNextFont.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/AltoneTrial-Regular.ttf")));
-		} catch (IOException|FontFormatException e) {
-			e.printStackTrace();
-		}
 		this.roomNo = roomNo;
 				
 		//this is the ManageRoomDB by using this I can dynamically put to TextField
@@ -78,38 +74,72 @@ public class ManageRoom extends JFrame implements ActionListener{
 		//form to fill in (Guess name, Check-in, Check-out, Payment) labels and textboxes
 		//format (Label -> Textbox)
 		JLabel guestName = new JLabel("Guest Name");
-		guestName.setBounds(20, 100, 130, 30);
+		guestName.setBounds(20, 85, 130, 30);
 		guestName.setForeground(Color.white);
 		guestName.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
 		nameTField = new JTextField();
-		nameTField.setBounds(150, 100, 300, 30);
+		nameTField.setBounds(185, 85, 300, 30);
 		nameTField.setText(manageDb.getGuestName()); //get name from database
 		
 		JLabel checkInLabel = new JLabel("Check-in");
-		checkInLabel.setBounds(20, 150, 130, 30);
+		checkInLabel.setBounds(20, 135, 130, 30);
 		checkInLabel.setForeground(Color.white);
 		checkInLabel.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
 		checkin_date = new DatePicker();
-		checkin_date.setBounds(150, 150, 200, 30);
+		checkin_date.setBounds(185, 135, 200, 30);
 		checkin_time = new TimePicker();
-		checkin_time.setBounds(350, 150, 100, 30);
+		checkin_time.setBounds(385, 135, 100, 30);
 		System.out.println(guest.getCheckInDate());
 		System.out.println(guest.getPayment());
 		JLabel checkOutLabel = new JLabel("Check-out");
-		checkOutLabel.setBounds(20, 200, 130, 30);
+		checkOutLabel.setBounds(20, 185, 130, 30);
 		checkOutLabel.setForeground(Color.white);
 		checkOutLabel.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
 		checkout_date = new DatePicker();
-		checkout_date.setBounds(150, 200, 200, 30);
+		checkout_date.setBounds(185, 185, 200, 30);
 		checkout_time = new TimePicker();
-		checkout_time.setBounds(350, 200, 100, 30);
+		checkout_time.setBounds(385, 185, 100, 30);
 		JLabel paymentLabel = new JLabel("Payment");
-		paymentLabel.setBounds(20, 250, 130, 30);
+		paymentLabel.setBounds(20, 235, 130, 30);
 		paymentLabel.setForeground(Color.white);
 		paymentLabel.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
 		paymentTField = new JTextField();
-		paymentTField.setBounds(150, 250, 300, 30);
+		paymentTField.setBounds(185, 235, 300, 30);
 		paymentTField.setText(String.valueOf(guest.getPayment()));
+		
+		JLabel lblPaymentMethod = new JLabel("Payment Method");
+		lblPaymentMethod.setBounds(20, 285, 180, 30);
+		lblPaymentMethod.setForeground(Color.white);
+		lblPaymentMethod.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
+		paymentMethodCash = new JRadioButton("Cash");
+		paymentMethodCash.setBounds(185, 285, 70, 30);
+		paymentMethodCash.setOpaque(false);
+		paymentMethodCash.setFocusable(false);
+		paymentMethodCash.setForeground(Color.white);
+		paymentMethodCash.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
+		paymentMethodCard = new JRadioButton("Credit Card");
+		paymentMethodCard.setBounds(300, 285, 130, 30);
+		paymentMethodCard.setOpaque(false);
+		paymentMethodCard.setFocusable(false);
+		paymentMethodCard.setForeground(Color.white);
+		paymentMethodCard.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
+		
+		JLabel lblRoomStatus = new JLabel("Status");
+		lblRoomStatus.setBounds(20, 335, 180, 30);
+		lblRoomStatus.setForeground(Color.white);
+		lblRoomStatus.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
+		roomStatusOngiong = new JRadioButton("Ongoing");
+		roomStatusOngiong.setBounds(185, 335, 130, 30);
+		roomStatusOngiong.setOpaque(false);
+		roomStatusOngiong.setFocusable(false);
+		roomStatusOngiong.setForeground(Color.white);
+		roomStatusOngiong.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
+		roomStatusReserved = new JRadioButton("Reserved");
+		roomStatusReserved.setBounds(300, 335, 130, 30);
+		roomStatusReserved.setOpaque(false);
+		roomStatusReserved.setFocusable(false);
+		roomStatusReserved.setForeground(Color.white);
+		roomStatusReserved.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
 		
 		
 		try {
@@ -130,12 +160,23 @@ public class ManageRoom extends JFrame implements ActionListener{
 			// TODO: handle exception
 		}
 		
-		test = new JButton("test");
-		test.setBounds(300, 300, 100, 30);
-		test.addActionListener(this);
+		submitBtn = new JButton("Submit");
+		submitBtn.setBounds(380, 390, 100, 30);
+		submitBtn.addActionListener(this);
 		
+		markAsDoneBtn = new JButton("Done");
+		markAsDoneBtn.setBounds(270, 390, 100, 30);
+		markAsDoneBtn.addActionListener(this);
+		markAsDoneBtn.setBackground(Color.green);
+		markAsDoneBtn.setForeground(Color.white);
 		
-		this.setSize(500, 400);
+		deleteBtn = new JButton("Delete");
+		deleteBtn.setBounds(160, 390, 100, 30);
+		deleteBtn.addActionListener(this);
+		deleteBtn.setBackground(Color.red);
+		deleteBtn.setForeground(Color.white);
+		
+		this.setSize(510, 450);
 		this.setLayout(null);
 		this.add(roomNumber);
 		this.add(guestName);
@@ -148,7 +189,15 @@ public class ManageRoom extends JFrame implements ActionListener{
 		this.add(checkout_time);
 		this.add(paymentLabel);
 		this.add(paymentTField);
-		this.add(test);
+		this.add(lblPaymentMethod);
+		this.add(paymentMethodCash);
+		this.add(paymentMethodCard);
+		this.add(lblRoomStatus);
+		this.add(roomStatusOngiong);
+		this.add(roomStatusReserved);
+		this.add(submitBtn);
+		this.add(markAsDoneBtn);
+		this.add(deleteBtn);
 		
 		this.setLocationRelativeTo(null);
 		this.setUndecorated(true);
@@ -158,7 +207,7 @@ public class ManageRoom extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == test) {
+		if(e.getSource() == submitBtn) {
 			System.out.println();
 			String name = nameTField.getText();
 			LocalDate checkin_d = checkin_date.getDate();

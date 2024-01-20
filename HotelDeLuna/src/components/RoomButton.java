@@ -59,15 +59,7 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 		
 		textInButton = "<html><p style='font-size:20px; text-align:center;'>Room "+roomNumber+"</p>"
 						+ "<p style='text-align:center;'><br>"+guestName+"<br>"+checkinDateTime+"<br>"+checkoutDateTime+"</p></html>";
-		//importing the font and use them.
-		try {
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/TheNextFont.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/CODE Bold.otf")));
-		} catch (IOException|FontFormatException e) {
-			e.printStackTrace();
-		}
-		
+
 		 
 		
 		setForeground(Color.WHITE);

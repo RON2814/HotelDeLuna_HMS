@@ -69,12 +69,6 @@ public class DashboardPanel extends JPanel implements ActionListener{
 	public DashboardPanel() {
 			
 		try {
-			//import font
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/TheNextFont.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/Roboto-Regular.ttf")));
-			
-			
 			available = null;
     		ongoing = null;
     		exceed = null;
@@ -83,14 +77,14 @@ public class DashboardPanel extends JPanel implements ActionListener{
     		search = null;
 			// Load images
     		available = ImageIO.read(getClass().getResource("/assets/available.png"));
-    		ongoing = ImageIO.read(getClass().getResource("/assets/ongoing.png"));
+    		ongoing = ImageIO.read(getClass().getResource("/assets/Ongoing.png"));
     		exceed = ImageIO.read(getClass().getResource("/assets/exceed.png"));
     		reserved = ImageIO.read(getClass().getResource("/assets/reserved.png"));
     		logo = ImageIO.read(getClass().getResource("/assets/logo.png"));
     		search = ImageIO.read(getClass().getResource("/assets/search.png"));
     		
 			
-		} catch (IOException|FontFormatException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		//initializing components here..
@@ -120,7 +114,7 @@ public class DashboardPanel extends JPanel implements ActionListener{
 		room2 = new RoomButton(2, 2, "Testing No2", "CHECK IN", "CHECK OUT", 2);
 		room3 = new RoomButton(3, 3, "Testing No3", "CHECK IN", "CHECK OUT", 3);
 		room4 = new RoomButton(4, 4, "Testing No4", "CHECK IN", "CHECK OUT", 4);
-		room5 = new RoomButton();
+		room5 = new RoomButton(5, 5, "Testing No4", "CHECK IN", "CHECK OUT", 4);
 		room6 = new RoomButton();
 		room7 = new RoomButton();
 		room8 = new RoomButton();
