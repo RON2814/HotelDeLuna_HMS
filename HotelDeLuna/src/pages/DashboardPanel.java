@@ -109,11 +109,9 @@ public class DashboardPanel extends JPanel implements ActionListener{
 		roomspanelButtons.setLayout(new GridLayout(2, 5, 10, 5));
 		roomspanelButtons.setBackground(Color.WHITE);
 		
-
 		//testing database v0.1
 		manageDb = new ManageRoomDB(1);
 		System.out.println(manageDb.getGuestId() + "-" + manageDb.getGuestName());
-		
 		
 		//buttons for manage room...also can add more here
 		room1 = new RoomButton(1, manageDb.getGuestId(), manageDb.getGuestName(), manageDb.getCheckIn(), manageDb.getCheckOut(), manageDb.getRoomAvail());
@@ -266,10 +264,11 @@ public class DashboardPanel extends JPanel implements ActionListener{
 	        logoutButton.setFocusable(false);
 	        logoutButton.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, (colors)[0]));
 	        logoutButton.setIcon(new ImageIcon("//C:/Users/Admin/git/HotelDeLuna_HMS/HotelDeLuna/src/assets/logoutIcon.png"));
-	        addMouseListener(new MouseAdapter() {
+	        logoutButton.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseClicked(MouseEvent e) {
-	              
+	           
+	            	
 	            }
 	        });
 	        
