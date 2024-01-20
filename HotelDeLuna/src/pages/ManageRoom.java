@@ -200,6 +200,7 @@ public class ManageRoom extends JFrame implements ActionListener{
 		this.add(deleteBtn);
 		
 		this.setLocationRelativeTo(null);
+
 		this.setUndecorated(true);
 		this.getContentPane().setBackground(new Color(22,22,22));
 		this.setVisible(true);

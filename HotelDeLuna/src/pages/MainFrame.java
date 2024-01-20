@@ -9,6 +9,7 @@ public class MainFrame extends JFrame{
 	LoginPage login = new LoginPage();
 	DashboardPanel dash = new DashboardPanel();
 	
+	
 	public MainFrame() {
 		this.setTitle("HOTEL DE LUNA");
 		

@@ -9,7 +9,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JButton;
 
-class RoundedButton extends JButton {
+public class RoundedButton extends JButton {
 
     public RoundedButton(String text) {
         super(text);
@@ -32,7 +32,7 @@ class RoundedButton extends JButton {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);
+        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
 
         super.paintComponent(g);
     }
