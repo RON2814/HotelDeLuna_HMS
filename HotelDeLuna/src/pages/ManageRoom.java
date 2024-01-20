@@ -1,17 +1,10 @@
 package pages;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
-import java.io.File;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -20,10 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.text.DateFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 
 import components.RoomButton;
@@ -31,22 +22,27 @@ import database.GuestDB;
 import database.ManageRoomDB;
 
 public class ManageRoom extends JFrame implements ActionListener{
+	//database create a variable for for global use
 	private GuestDB guest;
 	ManageRoomDB manageDb;
 	
+	//components on this class
 	private JLabel roomNumber;
 	private JTextField nameTField, paymentTField;
 	private DatePicker checkin_date, checkout_date;
 	private TimePicker checkin_time, checkout_time;
 	private JRadioButton paymentMethodCash, paymentMethodCard;
 	private JRadioButton roomStatusOngiong, roomStatusReserved;
+	private JButton submitBtn, markAsDoneBtn, deleteBtn;
 	
 	private int guestId;
 	
-	private JButton submitBtn, markAsDoneBtn, deleteBtn;
-	
 	private int roomNo;
 	private String guestName;
+	
+	//used in radio button f 
+	private String paymentMethod;
+	private String roomStats;
 	
 	//this constructor is a JFrame that show when the room is press
 	public ManageRoom(int roomNo, int guestId) {
@@ -217,6 +213,7 @@ public class ManageRoom extends JFrame implements ActionListener{
 			LocalTime checkout_t = checkout_time.getTime();
 			int payment = Integer.valueOf(paymentTField.getText());
 			
+			//check in date and time combined used for dashboard buttons
 			String checkinCom = checkin_date +" "+ checkin_time;
 			String checkoutCom = checkout_date +" "+ checkout_time;
 			
@@ -227,7 +224,7 @@ public class ManageRoom extends JFrame implements ActionListener{
 			}
 			
 			guest.updateGuestData(guestId, name, checkin_d, checkin_t, checkout_d, checkout_t, payment);
-			manageDb.updateRoom(1, guestId, name, checkinCom, checkoutCom);
+			manageDb.updateRoom(1, checkin_d, name, checkinCom, checkoutCom);
 			
 			this.setVisible(false);
 			this.dispose();

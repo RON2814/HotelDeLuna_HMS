@@ -57,7 +57,7 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 		roomNo = roomNumber;
 		this.guestId = guestId;
 		
-		textInButton = "<html><p style='font-size:20px; text-align:center;'>Room "+roomNumber+"</p>"
+		textInButton = "<html><p style='font-size:15px; text-align:center;'>Room "+roomNumber+"</p>"
 						+ "<p style='text-align:center;'><br>"+guestName+"<br>"+checkinDateTime+"<br>"+checkoutDateTime+"</p></html>";
 
 		 
@@ -103,9 +103,13 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 		this.repaint();
 	}
 	
+	public int getRoomNo() {
+		return this.roomNo;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("This is pressed. " + roomNo);
+		
 		System.out.println(guestId);
 		manage = new ManageRoom(roomNo, guestId);
 		this.revalidate();

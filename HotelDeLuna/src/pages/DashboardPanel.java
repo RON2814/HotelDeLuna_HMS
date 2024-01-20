@@ -31,6 +31,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -43,7 +44,7 @@ import database.ManageRoomDB;
 public class DashboardPanel extends JPanel implements ActionListener{
 	//database
 	private GuestDB guest; 
-	private ManageRoomDB manageDb;
+	private ManageRoomDB manageDb1, manageDb2, manageDb3, manageDb4, manageDb5, manageDb6, manageDb7, manageDb8, manageDb9, manageDb10;
 	private int guestId;
 	
 	private ManageRoom mr;
@@ -103,21 +104,29 @@ public class DashboardPanel extends JPanel implements ActionListener{
 		roomspanelButtons.setLayout(new GridLayout(2, 5, 10, 5));
 		roomspanelButtons.setBackground(Color.WHITE);
 		
-		//testing database v0.1
-		manageDb = new ManageRoomDB(1);
-		System.out.println(manageDb.getGuestId() + "-" + manageDb.getGuestName());
+		//inicialize database each buttons
+		manageDb1 = new ManageRoomDB(1);
+		manageDb2 = new ManageRoomDB(2);
+		manageDb3 = new ManageRoomDB(3);
+		manageDb4 = new ManageRoomDB(4);
+		manageDb5 = new ManageRoomDB(5);
+		manageDb6 = new ManageRoomDB(6);
+		manageDb7 = new ManageRoomDB(7);
+		manageDb8 = new ManageRoomDB(8);
+		manageDb9 = new ManageRoomDB(9);
+		manageDb10 = new ManageRoomDB(10);
 		
 		//buttons for manage room...also can add more here
-		room1 = new RoomButton(1, manageDb.getGuestId(), manageDb.getGuestName(), manageDb.getCheckIn(), manageDb.getCheckOut(), manageDb.getRoomAvail());
-		room2 = new RoomButton(2, 2, "Testing No2", "CHECK IN", "CHECK OUT", 2);
-		room3 = new RoomButton(3, 3, "Testing No3", "CHECK IN", "CHECK OUT", 3);
-		room4 = new RoomButton(4, 4, "Testing No4", "CHECK IN", "CHECK OUT", 4);
-		room5 = new RoomButton(5, 5, "Testing No4", "CHECK IN", "CHECK OUT", 4);
-		room6 = new RoomButton();
-		room7 = new RoomButton();
-		room8 = new RoomButton();
-		room9 = new RoomButton();
-		room10 = new RoomButton();
+		room1 = new RoomButton(1, manageDb1.getGuestId(), manageDb1.getGuestName(), manageDb1.getCheckIn(), manageDb1.getCheckOut(), manageDb1.getRoomAvail());
+		room2 = new RoomButton(2, manageDb2.getGuestId(), manageDb2.getGuestName(), manageDb2.getCheckIn(), manageDb2.getCheckOut(), manageDb2.getRoomAvail());
+		room3 = new RoomButton(3, manageDb3.getGuestId(), manageDb3.getGuestName(), manageDb3.getCheckIn(), manageDb3.getCheckOut(), manageDb3.getRoomAvail());
+		room4 = new RoomButton(4, manageDb4.getGuestId(), manageDb4.getGuestName(), manageDb4.getCheckIn(), manageDb4.getCheckOut(), manageDb4.getRoomAvail());
+		room5 = new RoomButton(5, manageDb5.getGuestId(), manageDb5.getGuestName(), manageDb5.getCheckIn(), manageDb5.getCheckOut(), manageDb5.getRoomAvail());
+		room6 = new RoomButton(6, manageDb6.getGuestId(), manageDb6.getGuestName(), manageDb6.getCheckIn(), manageDb6.getCheckOut(), manageDb6.getRoomAvail());
+		room7 = new RoomButton(7, manageDb7.getGuestId(), manageDb7.getGuestName(), manageDb7.getCheckIn(), manageDb7.getCheckOut(), manageDb7.getRoomAvail());
+		room8 = new RoomButton(8, manageDb8.getGuestId(), manageDb8.getGuestName(), manageDb8.getCheckIn(), manageDb8.getCheckOut(), manageDb8.getRoomAvail());
+		room9 = new RoomButton(9, manageDb9.getGuestId(), manageDb9.getGuestName(), manageDb9.getCheckIn(), manageDb9.getCheckOut(), manageDb9.getRoomAvail());
+		room10 = new RoomButton(10, manageDb10.getGuestId(), manageDb10.getGuestName(), manageDb10.getCheckIn(), manageDb10.getCheckOut(), manageDb10.getRoomAvail());
 		
 		roomspanelButtons.add(room1);
 		roomspanelButtons.add(room2);
@@ -257,12 +266,14 @@ public class DashboardPanel extends JPanel implements ActionListener{
 	        logoutButton.setBackground(Color.WHITE);
 	        logoutButton.setFocusable(false);
 	        logoutButton.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, (colors)[0]));
-	        logoutButton.setIcon(new ImageIcon("//C:/Users/Admin/git/HotelDeLuna_HMS/HotelDeLuna/src/assets/logoutIcon.png"));
+	        logoutButton.setIcon(new ImageIcon("src/assets/logoutIcon.png"));
 	        logoutButton.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseClicked(MouseEvent e) {
-	           
-	            	
+	            	int logout = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Logout", JOptionPane.OK_CANCEL_OPTION);
+	            	if(logout == JOptionPane.YES_OPTION) {
+	            		new Login();
+	            	}
 	            }
 	        });
 	        
@@ -296,20 +307,7 @@ public class DashboardPanel extends JPanel implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		if(e.getSource() == room1) {
-//			System.out.println("test 1 button is pressed");
-//			mr = new ManageRoom(1);
-//			mr.setVisible(true);
-//		}
-//		if(e.getSource() == room2) {
-//			guest = new GuestDB();
-//			//g.printData();
-//			System.out.println(guest.retrieveGuestData(2));
-//		}
-//		if(e.getSource() == room3) {
-//			guest = new GuestDB();
-//			guest.printData();
-//		}
+		
 	}
 	
 	public void currentDateTime() {
