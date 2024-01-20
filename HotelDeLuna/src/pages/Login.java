@@ -44,8 +44,8 @@ public class Login extends JFrame  {
     private Font fontOne = new Font("Arial Black", Font.PLAIN, 13);
     private Font fontTwo = new Font("Arial", Font.BOLD, 20);
     private Font fontThree = new Font("Arial", Font.PLAIN, 15);
-    private ImageIcon showIcon = new ImageIcon("//C:/Users/Admin/eclipse-workspace/HotelManagementSystem/Images/Img/hide.png"); 
-    private ImageIcon hideIcon = new ImageIcon("//C:/Users/Admin/eclipse-workspace/HotelManagementSystem/Images/Img/eye.png");
+    private ImageIcon showIcon = new ImageIcon("//C:/Users/Admin/git/HotelDeLuna_HMS/HotelDeLuna/src/assets/hide.png"); 
+    private ImageIcon hideIcon = new ImageIcon("//C:/Users/Admin/git/HotelDeLuna_HMS/HotelDeLuna/src/assets/eye.png");
 	private JLabel exit;
     //Main to run the whole code
 	public static void main(String [] args) {
@@ -75,7 +75,7 @@ public class Login extends JFrame  {
 		
 		//coordinates of the frame
 		setSize(800, 500);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("//C:/Users/Admin/eclipse-workspace/HotelManagementSystem/Images/Img/logo.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("//C:/Users/Admin/git/HotelDeLuna_HMS/HotelDeLuna/src/assets/logo.png"));
 		setUndecorated(true);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
 		setLocationRelativeTo(null);
