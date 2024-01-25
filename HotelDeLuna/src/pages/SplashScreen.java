@@ -36,7 +36,7 @@ public class SplashScreen extends JFrame {
 		
 				
 				progressBar = new JProgressBar(0, 2000);
-				progressBar.setBounds(0,295, 502, 35);
+				progressBar.setBounds(10,295, 482,5);
 				progressBar.setMinimum(0); 
 		        progressBar.setMaximum(100);				
 				progressBar.setForeground(Color.white);
@@ -46,7 +46,7 @@ public class SplashScreen extends JFrame {
 				add(progressBar);
 							
 				setSize(502, 320);
-				setIconImage(Toolkit.getDefaultToolkit().getImage("//C:/Users/Admin/git/HotelDeLuna_HMS/HotelDeLuna/src/assets/logo.png"));
+				setIconImage(Toolkit.getDefaultToolkit().getImage("src/assets/logo.png"));
 				setLayout(null);
 				setLocationRelativeTo(null);
 				setUndecorated(true);

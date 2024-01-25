@@ -133,21 +133,21 @@ public class Login extends JFrame  {
 	        name.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (colors)[0]));
 
 	        // when clicked, the placeholder will disappear
-	        name.addFocusListener(new FocusListener() {
-	          public void focusGained(FocusEvent e) {
-	            if (name.getText().equals(" Username")) {
-	               name.setText("");
-	               name.setForeground(Color.BLACK);
-	            }
-	          }
-
-	          public void focusLost(FocusEvent e) {
-	            if (name.getText().isEmpty()) {
-	              name.setText(" Username");
-	              name.setForeground(Color.BLACK);
-	            }
-	          }
-	        });
+//	        name.addFocusListener(new FocusListener() {
+//	          public void focusGained(FocusEvent e) {
+//	            if (name.getText().equals(" Username")) {
+//	               name.setText("");
+//	               name.setForeground(Color.BLACK);
+//	            }
+//	          }
+//
+//	          public void focusLost(FocusEvent e) {
+//	            if (name.getText().isEmpty()) {
+//	              name.setText(name.getText());
+//	              name.setForeground(Color.BLACK);
+//	            }
+//	          }
+//	        });
 	        
 	        //password field of password
 	        password = new passwordPlaceHolder("Password");
@@ -236,6 +236,7 @@ public class Login extends JFrame  {
 		    public String text;
 		    public usernamePlaceHolder(String name) {
 		      this.text = name;
+		      setFont(this.getFont());
 		    }
 		    public void paintComponent(Graphics g) {
 		      super.paintComponent(g);
@@ -244,9 +245,9 @@ public class Login extends JFrame  {
 		        graphics2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		        graphics2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		      
-		      if(getText().isBlank()) {
+		      if(!text.isEmpty()) {
 		      graphics2d.setColor(Color.BLACK);
-		      graphics2d.drawString(text, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top + 15);
+		      graphics2d.drawString(text, getInsets().left, getInsets().top + 20);
 		      
 		      }
 		    }
@@ -257,6 +258,7 @@ public class Login extends JFrame  {
 		    public String text;
 		    public passwordPlaceHolder(String password) {
 		      this.text = password;
+		      setFont(this.getFont());
 		    }
 		    
 		    public void paintComponent(Graphics g) {
@@ -266,9 +268,9 @@ public class Login extends JFrame  {
 		       graphics2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		       graphics2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		      
-		      if(getText().isBlank()) {
+		      if(!text.isEmpty()) {
 		      graphics2d.setColor(Color.BLACK);
-		      graphics2d.drawString(text, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top + 15);
+		      graphics2d.drawString(text, getInsets().left, getInsets().top + 20);
 		      
 		      }		      
 		    }

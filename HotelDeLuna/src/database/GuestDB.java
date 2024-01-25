@@ -1,5 +1,6 @@
 package database;
 
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -32,9 +33,9 @@ public class GuestDB {
 		}
 	}
 	
-	public void insertData(int roomNo, String guestName, LocalDate checkin_d, LocalTime checkin_t, LocalDate checkout_d, LocalTime checkout_t, int payment) {
-		String query = "INSERT INTO [dbo].[Guest] (room_no, guest_name, checkin_date, checkin_time, checkout_date, checkout_time, payment)"
-					 + "VALUES ('"+roomNo+"', '"+guestName+"', '"+checkin_d+"', '"+checkin_t+"', '"+checkout_d+"', '"+checkout_t+"', '"+payment+"');";
+	public void insertData(int roomNo, String guestName, LocalDate checkin_d, LocalTime checkin_t, LocalDate checkout_d, LocalTime checkout_t, int payment, String paymentMethod) {
+		String query = "INSERT INTO [dbo].[Guest] (room_no, guest_name, checkin_date, checkin_time, checkout_date, checkout_time, payment, payment_method)"
+					 + "VALUES ('"+roomNo+"', '"+guestName+"', '"+checkin_d+"', '"+checkin_t+"', '"+checkout_d+"', '"+checkout_t+"', '"+payment+"', '"+paymentMethod+"');";
 		try {
 			Statement statement = connect.createStatement();
 			statement.executeUpdate(query);
@@ -82,10 +83,26 @@ public class GuestDB {
 	public int getPayment() {
 		return this.payment;
 	}
+	public String getPaymentMethod() {
+		if(this.paymentMethod == null) {
+			this.paymentMethod = "";
+		}
+		return this.paymentMethod;
+	}
 	
+	public void deleteGuestData(int guestId) {
+		String query = "DELETE FROM [dbo].[Guest] WHERE Guest_id='"+guestId+"'";
+		try {
+			Statement statement = connect.createStatement();
+			statement.executeUpdate(query);
+			System.out.println("Data deleted from GUEST table is complete.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
-	public void updateGuestData(int guestId, String name, LocalDate checkin_date, LocalTime checkin_time, LocalDate checkout_date, LocalTime checkout_time, int payment) {
-		String query = "UPDATE [dbo].[Guest] SET guest_name = '"+name+"', checkin_date = '"+checkin_date+"', checkin_time = '"+checkin_time+"', checkout_date = '"+checkout_date+"', checkout_time = '"+checkout_time+"', payment = '"+payment+"' WHERE guest_id = '"+guestId+"';";
+	public void updateGuestData(int guestId, String name, LocalDate checkin_date, LocalTime checkin_time, LocalDate checkout_date, LocalTime checkout_time, int payment, String paymentMethod) {
+		String query = "UPDATE [dbo].[Guest] SET guest_name='"+name+"', checkin_date='"+checkin_date+"', checkin_time='"+checkin_time+"', checkout_date='"+checkout_date+"', checkout_time='"+checkout_time+"', payment='"+payment+"', payment_method='"+paymentMethod+"' WHERE guest_id='"+guestId+"';";
 		try {
 			Statement statement = connect.createStatement();
 			statement.executeUpdate(query);

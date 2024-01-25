@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import components.RoundedButton;
+import pages.MainFrame;
 import pages.ManageRoom;
 
 public class RoomButton extends JButton implements ActionListener, MouseListener{
@@ -51,6 +52,9 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 	 */
 	public RoomButton(int roomNumber,int guestId, String guestName, String checkinDateTime, String checkoutDateTime, int status) {
 		ImageIcon[] statusIcons = {availableStatus, on_goingStatus, times_upStatus, reservedStatus};
+		if(status == 0) {
+			status = 1;
+		}
 		Image icon = statusIcons[status-1].getImage().getScaledInstance(128, 16, Image.SCALE_SMOOTH);
 		ImageIcon statusImageIcon = new ImageIcon(icon);
 		roomStatus = status;
@@ -96,8 +100,8 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 	
 	
 	public void setButtonText(int roomNo, int guestId, String guestName, String checkin, String checkout) {
-		textInButton = "<html><p style='font-size:20px; text-align:center;'>Room "+roomNo+"</p>"
-				+ "<p style='text-align:center;'><br>"+guestName+"<br>"+checkin+"<br>"+checkout+"</p></html>";
+		textInButton = "<html><p style='margin:0; font-size:20px; text-align:center;'>Room "+roomNo+"</p>"
+				+ "<p style='margin:0; text-align:center;'>"+guestName+"<br>"+checkin+"<br>"+checkout+"</p></html>";
 		this.setText(textInButton);
 		this.revalidate();
 		this.repaint();

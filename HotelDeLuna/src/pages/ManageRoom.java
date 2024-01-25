@@ -2,15 +2,20 @@ package pages;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Desktop.Action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -20,6 +25,7 @@ import com.github.lgooddatepicker.components.TimePicker;
 import components.RoomButton;
 import database.GuestDB;
 import database.ManageRoomDB;
+import main.Main;
 
 public class ManageRoom extends JFrame implements ActionListener{
 	//database create a variable for for global use
@@ -27,22 +33,27 @@ public class ManageRoom extends JFrame implements ActionListener{
 	ManageRoomDB manageDb;
 	
 	//components on this class
-	private JLabel roomNumber;
+	private JLabel roomNumber, exit;
 	private JTextField nameTField, paymentTField;
 	private DatePicker checkin_date, checkout_date;
 	private TimePicker checkin_time, checkout_time;
 	private JRadioButton paymentMethodCash, paymentMethodCard;
 	private JRadioButton roomStatusOngiong, roomStatusReserved;
 	private JButton submitBtn, markAsDoneBtn, deleteBtn;
+	private ButtonGroup paymentMethodGroup, statusBtnGroup;
 	
 	private int guestId;
 	
 	private int roomNo;
-	private String guestName;
+	private String guestName, paymentMethod;
 	
 	//used in radio button f 
-	private String paymentMethod;
-	private String roomStats;
+	private int roomStats;
+	
+	// creating constructor with non arguments
+	public ManageRoom() {
+		///just an empty for now
+	}
 	
 	//this constructor is a JFrame that show when the room is press
 	public ManageRoom(int roomNo, int guestId) {
@@ -55,7 +66,8 @@ public class ManageRoom extends JFrame implements ActionListener{
 		this.roomNo = roomNo;
 				
 		//this is the ManageRoomDB by using this I can dynamically put to TextField
-		manageDb = new ManageRoomDB(roomNo);
+		manageDb = new ManageRoomDB();
+		manageDb.getRoomData(roomNo);
 		guest = new GuestDB();
 		guest.retrieveGuestData(manageDb.getGuestId());
 		this.guestId = manageDb.getGuestId();
@@ -103,6 +115,7 @@ public class ManageRoom extends JFrame implements ActionListener{
 		paymentTField.setBounds(185, 235, 300, 30);
 		paymentTField.setText(String.valueOf(guest.getPayment()));
 		
+		paymentMethodGroup = new ButtonGroup();
 		JLabel lblPaymentMethod = new JLabel("Payment Method");
 		lblPaymentMethod.setBounds(20, 285, 180, 30);
 		lblPaymentMethod.setForeground(Color.white);
@@ -119,7 +132,10 @@ public class ManageRoom extends JFrame implements ActionListener{
 		paymentMethodCard.setFocusable(false);
 		paymentMethodCard.setForeground(Color.white);
 		paymentMethodCard.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
+		paymentMethodGroup.add(paymentMethodCard);
+		paymentMethodGroup.add(paymentMethodCash);
 		
+		statusBtnGroup = new ButtonGroup();
 		JLabel lblRoomStatus = new JLabel("Status");
 		lblRoomStatus.setBounds(20, 335, 180, 30);
 		lblRoomStatus.setForeground(Color.white);
@@ -136,7 +152,24 @@ public class ManageRoom extends JFrame implements ActionListener{
 		roomStatusReserved.setFocusable(false);
 		roomStatusReserved.setForeground(Color.white);
 		roomStatusReserved.setFont(new Font("Altone Trial Regular", Font.PLAIN, 18));
+		statusBtnGroup.add(roomStatusOngiong);
+		statusBtnGroup.add(roomStatusReserved);
 		
+		
+		//save the selected in radio button
+		paymentMethod = guest.getPaymentMethod();
+		if(paymentMethod.equals(paymentMethodCard.getText())) {
+			paymentMethodCard.setSelected(true);
+		} else if(paymentMethod.equals(paymentMethodCash.getText())) {
+			paymentMethodCash.setSelected(true);
+		} else {
+			
+		}
+		if(manageDb.getRoomAvail() == 2) {
+			roomStatusOngiong.setSelected(true);
+		} else if(manageDb.getRoomAvail() == 4) {
+			roomStatusReserved.setSelected(true);
+		}
 		
 		try {
 			//adding time and date from database
@@ -172,6 +205,16 @@ public class ManageRoom extends JFrame implements ActionListener{
 		deleteBtn.setBackground(Color.red);
 		deleteBtn.setForeground(Color.white);
 		
+		exit = new JLabel("X");
+        exit.setBounds(480, 10, 50, 25);
+        exit.setFont(new Font("Berlin Sans FB Demi", Font.BOLD, 21));
+        exit.setForeground(Color.red);
+        exit.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+            	dispose();
+            }	            
+        });
+		
 		this.setSize(510, 450);
 		this.setLayout(null);
 		this.add(roomNumber);
@@ -194,6 +237,7 @@ public class ManageRoom extends JFrame implements ActionListener{
 		this.add(submitBtn);
 		this.add(markAsDoneBtn);
 		this.add(deleteBtn);
+		this.add(exit);
 		
 		this.setLocationRelativeTo(null);
 
@@ -204,6 +248,7 @@ public class ManageRoom extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//this is the action from SUBMIT button.
 		if(e.getSource() == submitBtn) {
 			System.out.println();
 			String name = nameTField.getText();
@@ -217,21 +262,48 @@ public class ManageRoom extends JFrame implements ActionListener{
 			String checkinCom = checkin_date +" "+ checkin_time;
 			String checkoutCom = checkout_date +" "+ checkout_time;
 			
-			if(guestId == 0) {
-				guest.insertData(roomNo, name, checkin_d, checkin_t, checkout_d, checkout_t, payment);
-				guestId = guest.getGuestId(name, checkin_d, checkin_t);
-				System.out.println("//in press button// Guest Id: "+guestId);
+			// Room status radio button
+			if(roomStatusOngiong.isSelected() || roomStatusReserved.isSelected() || paymentMethodCash.isSelected() || paymentMethodCard.isSelected()) {
+				if(paymentMethodCash.isSelected()) {
+					paymentMethod = paymentMethodCash.getText();
+				} else if(paymentMethodCard.isSelected()) {
+					paymentMethod = paymentMethodCard.getText();
+				}
+				
+				if(roomStatusOngiong.isSelected()) {
+					roomStats = 2;
+				} else if(roomStatusReserved.isSelected()) {
+					roomStats = 4;
+				}
+				//query all the data
+				if(guestId == 0) {
+					guest.insertData(roomNo, name, checkin_d, checkin_t, checkout_d, checkout_t, payment, paymentMethod);
+					guestId = guest.getGuestId(name, checkin_d, checkin_t);
+					System.out.println("//in press button// Guest Id: "+guestId);
+				}
+				guest.updateGuestData(guestId, name, checkin_d, checkin_t, checkout_d, checkout_t, payment, paymentMethod);
+				manageDb.updateRoom(roomStats, checkin_d, name, checkinCom, checkoutCom);
+				// this will update what's on the button.
+				RoomButton rb = new RoomButton();
+				rb.setButtonText(roomNo, guestId, guestName, checkinCom, checkoutCom);
+				this.dispose();
+			} else {
+				JOptionPane.showMessageDialog(null, "Please check if the Payment method and Status is selected.", "Invalid input", JOptionPane.OK_OPTION);
 			}
 			
-			guest.updateGuestData(guestId, name, checkin_d, checkin_t, checkout_d, checkout_t, payment);
-			manageDb.updateRoom(1, checkin_d, name, checkinCom, checkoutCom);
-			
-			this.setVisible(false);
-			this.dispose();
-			
-			DashboardPanel db = new DashboardPanel();
-			RoomButton rb = new RoomButton();
-			rb.setButtonText(roomNo, guestId, guestName, checkinCom, checkoutCom);
+		}
+		
+		//this one is the DELETE button
+		if(e.getSource() == deleteBtn) {
+			if(guestId != 0) {
+				guest.deleteGuestData(guestId);
+				manageDb.deleteRoom(roomNo);
+				this.dispose();
+			} else {
+				JOptionPane.showMessageDialog(null, "Can't delete empty row.", "Error from DATABASE", JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
+	
+	
 }
