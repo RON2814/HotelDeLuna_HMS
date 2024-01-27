@@ -24,11 +24,8 @@ import components.RoundedButton;
 import pages.MainFrame;
 import pages.ManageRoom;
 
-public class RoomButton extends JButton implements ActionListener, MouseListener{
-	private int roomStatus;
+public class RoomButton extends JButton implements ActionListener{
 	private int roomNo;
-	private String guestName;
-	private String checkIn, checkOut;
 	private int guestId;
 	
 	private ManageRoom manage;
@@ -51,13 +48,12 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 	 * 4 = Reserved Icon
 	 */
 	public RoomButton(int roomNumber,int guestId, String guestName, String checkinDateTime, String checkoutDateTime, int status) {
-		ImageIcon[] statusIcons = {availableStatus, on_goingStatus, times_upStatus, reservedStatus};
-		if(status == 0) {
+		/*mageIcon[] statusIcons = {availableStatus, on_goingStatus, times_upStatus, reservedStatus};
+		if(status < 1) {
 			status = 1;
 		}
 		Image icon = statusIcons[status-1].getImage().getScaledInstance(128, 16, Image.SCALE_SMOOTH);
-		ImageIcon statusImageIcon = new ImageIcon(icon);
-		roomStatus = status;
+		ImageIcon statusImageIcon = new ImageIcon(icon); */
 		roomNo = roomNumber;
 		this.guestId = guestId;
 		
@@ -73,7 +69,7 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 		setContentAreaFilled(false);
 		setFocusable(false);
 		setBorder(null);
-		setIcon(statusImageIcon);
+		setIcon(roomAvailability(status));
 		setText(textInButton);
 		setHorizontalTextPosition(JButton.CENTER);
 		setVerticalTextPosition(JButton.TOP);
@@ -113,44 +109,36 @@ public class RoomButton extends JButton implements ActionListener, MouseListener
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
 		System.out.println(guestId);
-		manage = new ManageRoom(roomNo, guestId);
-		this.revalidate();
-		this.repaint();
+		manage = new ManageRoom(roomNo, guestId, this);
 	}
 	
-	//Mouse Listener Yes
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+	//update the text inside this button
+	public void updateText(String guestName, String checkinDateTime, String checkoutDateTime, int status) {
+		textInButton = "<html><p style='font-size:15px; text-align:center;'>Room "+roomNo+"</p>"
+						+ "<p style='text-align:center;'><br>"+guestName+"<br>"+checkinDateTime+"<br>"+checkoutDateTime+"</p></html>";
+		this.setText(textInButton);
+		this.setIcon(roomAvailability(status));
+	}
+	
+	//imageicon for room availability
+	public ImageIcon roomAvailability(int status) {
+		/* 
+		 * Status NAMING
+		 * 1 = Available Icon
+		 * 2 = On going Icon
+		 * 3 = Times up Icon
+		 * 4 = Reserved Icon
+		 */
 		
-	}
-	
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		ImageIcon[] statusIcons = {availableStatus, on_goingStatus, times_upStatus, reservedStatus};
+		if(status < 1) {
+			status = 1;
+		}
+		Image icon = statusIcons[status-1].getImage().getScaledInstance(128, 16, Image.SCALE_SMOOTH);
+		ImageIcon statusImageIcon = new ImageIcon(icon);
 		
+		return statusImageIcon;
 	}
-	
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-
 	
 }

@@ -48,14 +48,17 @@ public class ManageRoom extends JFrame implements ActionListener{
 	//used in radio button f 
 	private int roomStats;
 	
+	//refering to RoomButton
+	private RoomButton roomBtn;
+	
 	// creating constructor with non arguments
 	public ManageRoom() {
 		///just an empty for now
 	}
 	
 	//this constructor is a JFrame that show when the room is press
-	public ManageRoom(int roomNo, int guestId) {
-		//this will import the Font .otf or .ttf file
+	public ManageRoom(int roomNo, int guestId, RoomButton roomBtn) {
+		this.roomBtn = roomBtn; 
 		
 		setUndecorated(true);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
@@ -284,6 +287,7 @@ public class ManageRoom extends JFrame implements ActionListener{
 				// this will update what's on the button.
 				RoomButton rb = new RoomButton();
 				rb.setButtonText(roomNo, guestId, guestName, checkinCom, checkoutCom);
+				roomBtn.updateText(name, checkinCom, checkoutCom, roomStats);
 				this.dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, "Please check if the Payment method and Status is selected.", "Invalid input", JOptionPane.OK_OPTION);
